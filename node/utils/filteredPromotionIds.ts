@@ -1,6 +1,12 @@
 import type { GetAllBenefitsResponseItem } from '@vtex/clients/build/typings/ratesAndBenefits'
 
-export const getPromotionIds = (
+/**
+ * Collects valid promotion ids from a list of rate and benefits.
+ *
+ * @param promotions - VTEX Rates & Benefits items to inspect.
+ * @returns Array containing only non-empty `idCalculatorConfiguration` values.
+ */
+export const filteredPromotionIds = (
   promotions?: GetAllBenefitsResponseItem[]
 ): string[] => {
   if (!Array.isArray(promotions)) {

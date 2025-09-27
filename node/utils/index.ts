@@ -1,2 +1,3 @@
 export * from './handleVtexError'
-export * from './promotions'
+export * from './filteredPromotionIds'
+export * from './formattedPromotion'

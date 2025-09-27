@@ -7,7 +7,7 @@ import type {
 import { LRUCache, method, Service } from '@vtex/api'
 
 import { Clients } from './clients'
-import { promotions } from './middlewares/promotions/handlePromotions'
+import { promotions } from './middlewares'
 
 const TIMEOUT_MS = 8000
 
