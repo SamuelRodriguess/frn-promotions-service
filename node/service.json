@@ -7,7 +7,7 @@
   "workers": 1,
   "routes": {
     "status": {
-      "path": "/_v/custom-promotions/:code",
+      "path": "/_v/custom-promotions/:id",
       "public": true
     }
   }

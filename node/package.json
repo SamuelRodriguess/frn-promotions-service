@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@types/validator": "^13.15.3",
     "@vtex/clients": "^2.x",
     "co-body": "^6.0.0",
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "validator": "^13.15.15"
   },
   "devDependencies": {
     "@types/co-body": "^0.0.3",
