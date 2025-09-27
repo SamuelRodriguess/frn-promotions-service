@@ -1,4 +1,8 @@
 # 🛠 FRN Promotions Service
+[![Node.js](https://img.shields.io/badge/node-20.x-green)](https://nodejs.org/)
+[![VTEX IO](https://img.shields.io/badge/vtex-io-blue)](https://vtex.io/)
+[![TypeScript](https://img.shields.io/badge/typescript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![VTEX](https://img.shields.io/badge/VTEX-181717?logo=vtex&logoColor=white&color=red)](https://vtex.com/pt-br/)
 
 Custom VTEX IO service that centralizes the retrieval of rates & benefits promotions and exposes a curated payload for the storefront. The middleware chain validates inbound requests, calls VTEX's Rates & Benefits API, enriches the response with detailed promotion data, and returns only the fields required by the front end.
 
