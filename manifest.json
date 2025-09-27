@@ -1,9 +1,9 @@
 {
   "name": "frn-promotions-service",
   "vendor": "frncubo",
-  "version": "0.3.0",
-  "title": "Service Example",
-  "description": "Reference app for VTEX IO Services",
+  "version": "0.4.0",
+  "title": "Service promotions",
+  "description": "Service responsible for retrieving Rates and Benefits promotions data",
   "mustUpdateAt": "2018-01-04",
   "categories": [],
   "dependencies": {},

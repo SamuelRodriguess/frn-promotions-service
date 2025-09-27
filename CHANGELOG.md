@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-09-27
+
+### Added
+
+- RatesAndBenefits client VTEX
+- Support for retrieving promotion details `getPromotionById`
+- Support for retrieving all promotions `getAllBenefits`
+- New endpoint: `/_v/custom-promotions`
+
 ## [0.3.0] - 2024-10-23
 
 ### Changed
