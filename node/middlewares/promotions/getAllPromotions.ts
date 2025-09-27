@@ -2,6 +2,7 @@ import {
   filteredPromotionIds,
   formattedPromotion,
   handleVtexError,
+  isPromotionExpired,
 } from '../../utils'
 
 export async function getAllPromotions(
@@ -24,8 +25,12 @@ export async function getAllPromotions(
 
     const allPromotionsResponse = detailsPromotions.map(formattedPromotion)
 
+    const validPromotions = allPromotionsResponse.filter(
+      (promotion) => !isPromotionExpired(promotion)
+    )
+
     ctx.status = 200
-    ctx.body = allPromotionsResponse
+    ctx.body = validPromotions
 
     await next()
   } catch (err) {

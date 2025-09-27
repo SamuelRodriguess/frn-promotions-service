@@ -1,4 +1,8 @@
-import { formattedPromotion, handleVtexError } from '../../utils'
+import {
+  formattedPromotion,
+  handleVtexError,
+  isPromotionExpired,
+} from '../../utils'
 
 export async function getPromotionWithId(
   ctx: Context,
@@ -14,10 +18,16 @@ export async function getPromotionWithId(
       return next()
     }
 
-    const promotion = await ratesAndBenefits.getPromotionById(id)
+    const promotionData = await ratesAndBenefits.getPromotionById(id)
+
+    const promotionAtArray = Array(formattedPromotion(promotionData))
+
+    const validPromotion = promotionAtArray.filter(
+      (promotion) => !isPromotionExpired(promotion)
+    )
 
     ctx.status = 200
-    ctx.body = formattedPromotion(promotion)
+    ctx.body = validPromotion
   } catch (err) {
     handleVtexError(ctx, err)
   }
