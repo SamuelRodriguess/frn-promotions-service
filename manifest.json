@@ -1,6 +1,6 @@
 {
-  "name": "service-example",
-  "vendor": "vtex",
+  "name": "frn-promotions-service",
+  "vendor": "frncubo",
   "version": "0.3.0",
   "title": "Service Example",
   "description": "Reference app for VTEX IO Services",
@@ -28,6 +28,13 @@
     },
     {
       "name": "colossus-write-logs"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "*"
+      }
     }
   ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
