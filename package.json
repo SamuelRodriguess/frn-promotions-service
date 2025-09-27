@@ -4,7 +4,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "lint": "eslint --ext js,jsx,ts,tsx .",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\"",
+    "test": "cd node && npx jest --runInBand"
   },
   "husky": {
     "hooks": {
