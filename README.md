@@ -43,7 +43,7 @@ Supporting utilities live in `node/utils/`:
 #### Responses
 
 - **200 OK (single promotion)**
-
+```/_v/custom-promotions?id=d38eac5a-f2b3-410f-bc0b-f2211ede433b```
 ```json
 {
   "id": "d38eac5a-f2b3-410f-bc0b-f2211ede433b",
@@ -58,7 +58,7 @@ Supporting utilities live in `node/utils/`:
 ```
 
 - **200 OK (list)**
-
+```/_v/custom-promotions```
 ```json
 [
   {
