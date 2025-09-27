@@ -2014,7 +2014,7 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.3.tgz#781d360c282436494b32fe7d9f7f8e64b3118aa3"
   integrity sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==
 
-"@vtex/api@^7.x":
+"@vtex/api@^7.0.0":
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/@vtex/api/-/api-7.2.2.tgz#a94dc6a5b38aa71eefde8197b0dad2a70dca8b75"
   integrity sha512-W88pkXyqlyP+c0TapQNFqA0BUPWC6DlXUW7tsFV4vikAHdN5nZ0+0jv1B/hkn6eynrYdNGiJ4cDSaUBpg9kmhg==

@@ -2,15 +2,19 @@
 import { validatePromotions } from './validatePromotions'
 
 async function handlePromotions(ctx: Context, next: () => Promise<void>) {
-  const { ratesAndBenefits } = ctx.clients
+  const {
+    clients: { ratesAndBenefits /* catalog */ },
+    state: { code },
+  } = ctx
 
-  const benefits = await ratesAndBenefits.getAllBenefits('AUTH_TOKEN')
+  console.log('🚀 ~ handlePromotions ~ code:', code)
 
-  console.log('🚀 ~ handleBenefits ~ benefits:', benefits)
-  console.log('🚀 ~ ctx state:', ctx.state.code)
+  const data = await ratesAndBenefits.getPromotionById(
+    'd38eac5a-f2b3-410f-bc0b-f2211ede433b'
+  )
 
   ctx.status = 200
-  ctx.body = benefits
+  ctx.body = data
   await next()
 }
 

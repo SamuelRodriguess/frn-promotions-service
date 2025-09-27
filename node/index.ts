@@ -9,7 +9,7 @@ import { LRUCache, method, Service } from '@vtex/api'
 import { Clients } from './clients'
 import { promotions } from './middlewares/promotions/handlePromotions'
 
-const TIMEOUT_MS = 800
+const TIMEOUT_MS = 8000
 
 // Create a LRU memory cache for the Status client.
 // The 'max' parameter sets the size of the cache.
@@ -19,7 +19,7 @@ const TIMEOUT_MS = 800
 // To force responses to be cached, consider adding the `forceMaxAge` option to your client methods.
 const memoryCache = new LRUCache<string, Cached>({ max: 5000 })
 
-metrics.trackCache('status', memoryCache)
+metrics.trackCache('promotions', memoryCache)
 
 // This is the configuration for clients available in `ctx.clients`.
 const clients: ClientsConfig<Clients> = {
@@ -28,11 +28,11 @@ const clients: ClientsConfig<Clients> = {
   options: {
     // All IO Clients will be initialized with these options, unless otherwise specified.
     default: {
-      retries: 2,
+      retries: 10,
       timeout: TIMEOUT_MS,
     },
     // This key will be merged with the default options and add this cache to our Status client.
-    status: {
+    promotions: {
       memoryCache,
     },
   },
@@ -44,7 +44,7 @@ declare global {
 
   // The shape of our State object found in `ctx.state`. This is used as state bag to communicate between middlewares.
   interface State extends RecorderState {
-    code: number
+    code: string
   }
 }
 
