@@ -1,0 +1,1 @@
+# frn-promotions-service
