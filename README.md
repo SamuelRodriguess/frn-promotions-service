@@ -17,12 +17,12 @@ Custom VTEX IO service that centralizes the retrieval of rates & benefits promot
 ## Overview
 
 ```
-Request ──> validadePromotionId ──> getPromotionWithId ──> getAllPromotions ──> Response
+Request ──> validatePromotionId ──> getPromotionWithId ──> getAllPromotions ──> Response
                  │                        │                    │
                  └─────(sets ctx.state.id)└── fetch by ID      └── fetch + map all
 ```
 
-- `validadePromotionId`: validates `id` (if provided) using `validator.isUUID` and stores it on `ctx.state`.
+- `validatePromotionId`: validates `id` (if provided) using `validator.isUUID` and stores it on `ctx.state`.
 - `getPromotionWithId`: short-circuits the chain when `id` is present, calling `RatesAndBenefits.getPromotionById` and formatting the result.
 - `getAllPromotions`: when no `id` is passed, pulls every promotion through `RatesAndBenefits.getAllBenefits`, filters valid IDs, hydrates details in parallel (`Promise.all`), and formats each entry.
 
@@ -43,6 +43,8 @@ Supporting utilities live in `node/utils/`:
 #### Responses
 
 - **200 OK (single promotion)**
+
+✔️ endpoint promotion
 ```/_v/custom-promotions?id=d38eac5a-f2b3-410f-bc0b-f2211ede433b```
 ```json
 {
@@ -58,6 +60,8 @@ Supporting utilities live in `node/utils/`:
 ```
 
 - **200 OK (list)**
+
+✔️ endpoint promotions
 ```/_v/custom-promotions```
 ```json
 [
@@ -88,7 +92,7 @@ Supporting utilities live in `node/utils/`:
 ### Prerequisites
 
 - VTEX Toolbelt ≥ 3.x (`yarn add -g vtex`)
-- Node.js 16 or 18 LTS (aligned with VTEX IO runtime)
+- Node.js 20 or 18 LTS (aligned with VTEX IO runtime)
 - Yarn 1.x (ships with the repo via `yarn.lock`)
 
 ### Install & Link
@@ -96,10 +100,10 @@ Supporting utilities live in `node/utils/`:
 ```bash
 cd node
 yarn install
-cd ..
 vtex login <account>
 vtex use <workspace>
 vtex link
+
 ```
 
 The default route is exposed at `https://{workspace}--{account}.myvtex.com/_v/custom-promotions`.

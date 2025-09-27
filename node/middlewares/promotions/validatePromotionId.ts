@@ -3,7 +3,7 @@ import validator from 'validator'
 
 import { handleVtexError } from '../../utils'
 
-export async function validadePromotionId(
+export async function validatePromotionId(
   ctx: Context,
   next: () => Promise<void>
 ) {

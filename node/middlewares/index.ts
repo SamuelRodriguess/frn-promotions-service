@@ -1,9 +1,9 @@
 import { getPromotionWithId } from './promotions/getPromotionWithId'
 import { getAllPromotions } from './promotions/getAllPromotions'
-import { validadePromotionId } from './promotions/validadePromotionId'
+import { validatePromotionId } from './promotions/validatePromotionId'
 
 export const promotions = [
-  validadePromotionId,
+  validatePromotionId,
   getPromotionWithId,
   getAllPromotions,
 ]
