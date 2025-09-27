@@ -1,8 +1,5 @@
-import {
-  formattedPromotion,
-  handleVtexError,
-  isPromotionExpired,
-} from '../../utils'
+import { handleVtexError } from '../../utils'
+import { createPromotionService } from '../../services'
 
 export async function getPromotionWithId(
   ctx: Context,
@@ -11,6 +8,7 @@ export async function getPromotionWithId(
   try {
     const {
       clients: { ratesAndBenefits },
+      vtex: { logger },
       state: { id },
     } = ctx
 
@@ -18,16 +16,11 @@ export async function getPromotionWithId(
       return next()
     }
 
-    const promotionData = await ratesAndBenefits.getPromotionById(id)
-
-    const promotionAtArray = Array(formattedPromotion(promotionData))
-
-    const validPromotion = promotionAtArray.filter(
-      (promotion) => !isPromotionExpired(promotion)
-    )
+    const promotionService = createPromotionService(ratesAndBenefits, logger)
+    const promotion = await promotionService.findPromotionById(id)
 
     ctx.status = 200
-    ctx.body = validPromotion
+    ctx.body = promotion ? [promotion] : []
   } catch (err) {
     handleVtexError(ctx, err)
   }
