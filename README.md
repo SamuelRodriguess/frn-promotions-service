@@ -1,8 +1,9 @@
-# 🛠 FRN Promotions Service
-[![Node.js](https://img.shields.io/badge/node-7.x-green)](https://nodejs.org/)
+# FRN Promotions Service
+
+[![VTEX](https://img.shields.io/badge/VTEX-181717?logo=vtex&logoColor=white&color=red)](https://vtex.com/pt-br/)
 [![VTEX IO](https://img.shields.io/badge/vtex-io-blue)](https://vtex.io/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![VTEX](https://img.shields.io/badge/VTEX-181717?logo=vtex&logoColor=white&color=red)](https://vtex.com/pt-br/)
+[![Node.js](https://img.shields.io/badge/node-7.x-green)](https://nodejs.org/)
 
 The Promotions Service app, centralizes the retrieval of rates & benefits promotions and exposes a curated route for the storefront. The middleware chain validates inbound requests, calls VTEX's Rates & Benefits API, enriches the response with detailed promotion data, and returns only the fields required by the front end.
 
@@ -13,6 +14,24 @@ The Promotions Service app, centralizes the retrieval of rates & benefits promot
 - **Data normalization**: Uses `formattedPromotion` to expose a predictable payload (id, name, begin/end dates, conditions, SKUs, collections, categories).
 - **Error sanitation**: `handleVtexError` translates upstream failures into safe HTTP responses without leaking internal details.
 - **Caching ready**: Service leverages VTEX `LRUCache` for the Rates & Benefits client, reducing load on VTEX APIs.
+  
+## Project Structure
+
+```
+frn-promotions-service/
+├── manifest.json               # App metadata, policies, builders
+├── node/
+│   ├── index.ts                # Service entrypoint (clients + routes)
+│   ├── service.json            # Route exposure and scaling hints
+│   ├── clients/                # VTEX IO clients bag (RatesAndBenefits)
+│   ├── middlewares/
+│   │   └── promotions/         # Validation + fetching logic
+|   |── services/               # Contains the business logic layer
+│   ├── utils/                  # Formatting, filtering, error handling
+│   └── typings/                # Shared TypeScript definitions
+├── docs/                       # Documentation
+└── README.md                   
+```
 
 ## Overview
 
@@ -95,12 +114,13 @@ Supporting utilities live in `node/utils/`:
   "status": 400
 }
 ```
+
 ## References
 
 - [Promotions & Taxes API – Calculator Configuration](https://developers.vtex.com/docs/api-reference/promotions-and-taxes-api#get-/api/rnb/pvt/benefits/calculatorconfiguration)  
   Endpoint used to fetch and manage `idCalculatorConfiguration` data related to Rates & Benefits.
 
-## Local Development
+## 🛠 Local Development
 
 ### Prerequisites
 
@@ -131,31 +151,15 @@ yarn run test        # tests with Jest
 
 Use `lint.sh` (wired to `prereleasy`) before releasing to ensure CI parity.
 
-## 📂 Project Structure
 
-```
-frn-promotions-service/
-├── manifest.json               # App metadata, policies, builders
-├── node/
-│   ├── index.ts                # Service entrypoint (clients + routes)
-│   ├── service.json            # Route exposure and scaling hints
-│   ├── clients/                # VTEX IO clients bag (RatesAndBenefits)
-│   ├── middlewares/
-│   │   └── promotions/         # Validation + fetching logic
-|   |── services/               # Contains the business logic layer
-│   ├── utils/                  # Formatting, filtering, error handling
-│   └── typings/                # Shared TypeScript definitions
-├── docs/                       # Documentation
-└── README.md                   
-```
 
-## Error Handling & Observability
+## ⚙️ Error Handling & Observability
 
 - Errors hit during client calls bubble to `handleVtexError`, which sets `ctx.status` and a minimal `{ message, status }` payload.
 - VTEX Colossus logging is available by injecting `ctx.vtex.logger` (kept commented in middleware for quick enablement).
 - HTTP caching is handled via VTEX's `LRUCache`; tweak `TIMEOUT_MS`, retry count, and `memoryCache` in `node/index.ts` as needed.
 
-## Deployment Notes
+## 🚢 Deployment Notes
 
 - The app inherits policies defined in `manifest.json` (outbound access to `{{account}}.vtexcommercestable.com.br` and logging). Update them if you call additional hosts.
 - `prereleasy` runs `bash lint.sh`. Keep the script aligned with the checks you expect in CI.
