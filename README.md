@@ -1,8 +1,8 @@
-# FRN Promotions Service
+# 🛠 FRN Promotions Service
 
 Custom VTEX IO service that centralizes the retrieval of rates & benefits promotions and exposes a curated payload for the storefront. The middleware chain validates inbound requests, calls VTEX's Rates & Benefits API, enriches the response with detailed promotion data, and returns only the fields required by the front end.
 
-## Highlights
+## Features
 
 - **Single endpoint**: `GET /_v/custom-promotions` with optional `id` query parameter to fetch one promotion or the full list.
 - **Domain validation**: Rejects malformed `idCalculatorConfiguration` values up-front to avoid unnecessary calls.
@@ -10,7 +10,7 @@ Custom VTEX IO service that centralizes the retrieval of rates & benefits promot
 - **Error sanitation**: `handleVtexError` translates upstream failures into safe HTTP responses without leaking internal details.
 - **Caching ready**: Service leverages VTEX `LRUCache` for the Rates & Benefits client, reducing load on VTEX APIs.
 
-## Architecture Overview
+## Overview
 
 ```
 Request ──> validadePromotionId ──> getPromotionWithId ──> getAllPromotions ──> Response
@@ -28,7 +28,7 @@ Supporting utilities live in `node/utils/`:
 - `formattedPromotion`: maps a `CalculatorConfiguration` to the trimmed response schema.
 - `handleVtexError`: standardizes error responses (status + message).
 
-## HTTP API
+## API
 
 ### `GET /_v/custom-promotions`
 
@@ -58,15 +58,15 @@ Supporting utilities live in `node/utils/`:
 ```json
 [
   {
-    "id": "...",
-    "name": "...",
-    "beginDate": "...",
-    "endDate": "...",
-    "conditions": [],
-    "skus": [],
-    "collections": [],
-    "categories": []
-  }
+  "id": "d38eac5a-f2b3-410f-bc0b-f2211ede433b",
+  "name": "Summer",
+  "beginDate": "2024-01-01T00:00:00Z",
+  "endDate": "2024-01-31T23:59:59Z",
+  "conditions": ["cluster-123"],
+  "skus": ["12"],
+  "collections": ["summer"],
+  "categories": ["fashion"]
+}
 ]
 ```
 
@@ -79,13 +79,11 @@ Supporting utilities live in `node/utils/`:
 }
 ```
 
-> **Note:** The Rates & Benefits API requires administrative credentials. Invoke this endpoint with a valid VTEX admin session (or appKey/appToken) to avoid `403` responses from upstream.
-
 ## Local Development
 
 ### Prerequisites
 
-- VTEX Toolbelt ≥ 3.x (`npm i -g vtex`)
+- VTEX Toolbelt ≥ 3.x (`yarn add -g vtex`)
 - Node.js 16 or 18 LTS (aligned with VTEX IO runtime)
 - Yarn 1.x (ships with the repo via `yarn.lock`)
 
@@ -110,7 +108,7 @@ yarn lint        # eslint (TypeScript aware)
 
 Use `lint.sh` (wired to `prereleasy`) before releasing to ensure CI parity.
 
-## Project Layout
+## 📂 Project Structure
 
 ```
 frn-promotions-service/
