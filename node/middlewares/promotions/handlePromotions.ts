@@ -1,13 +1,19 @@
 /* eslint-disable no-console */
-import { validatePromotions } from './validatePromotions'
+import { getPromotionIds } from '../../utils/promotions'
+import { getPromotionId } from './getPromotionId'
 
 async function handlePromotions(ctx: Context, next: () => Promise<void>) {
   const {
-    clients: { ratesAndBenefits /* catalog */ },
-    state: { code },
+    clients: { ratesAndBenefits },
+    state: { id },
   } = ctx
 
-  console.log('🚀 ~ handlePromotions ~ code:', code)
+  console.log('🚀 ~ handlePromotions ~ code:', id)
+
+  const allPromotions = await ratesAndBenefits.getAllBenefits()
+  const idsPromotions = getPromotionIds(allPromotions?.items)
+
+  console.log('🚀 ~ handlePromotions ~ idsPromotions:', idsPromotions)
 
   const data = await ratesAndBenefits.getPromotionById(
     'd38eac5a-f2b3-410f-bc0b-f2211ede433b'
@@ -18,4 +24,4 @@ async function handlePromotions(ctx: Context, next: () => Promise<void>) {
   await next()
 }
 
-export const promotions = [validatePromotions, handlePromotions]
+export const promotions = [getPromotionId, handlePromotions]

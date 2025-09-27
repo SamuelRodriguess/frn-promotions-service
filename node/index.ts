@@ -31,7 +31,7 @@ const clients: ClientsConfig<Clients> = {
 declare global {
   type Context = ServiceContext<Clients, State>
   interface State extends RecorderState {
-    id: string
+    id: string | null
   }
 }
 
