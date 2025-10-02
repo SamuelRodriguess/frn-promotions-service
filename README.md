@@ -1,10 +1,11 @@
-# 🛠 FRN Promotions Service
-[![Node.js](https://img.shields.io/badge/node-20.x-green)](https://nodejs.org/)
+# FRN Promotions Service
+
+[![VTEX](https://img.shields.io/badge/VTEX-181717?logo=vtex&logoColor=white&color=red)](https://vtex.com/pt-br/)
 [![VTEX IO](https://img.shields.io/badge/vtex-io-blue)](https://vtex.io/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![VTEX](https://img.shields.io/badge/VTEX-181717?logo=vtex&logoColor=white&color=red)](https://vtex.com/pt-br/)
+[![Node.js](https://img.shields.io/badge/node-7.x-green)](https://nodejs.org/)
 
-Custom VTEX IO service that centralizes the retrieval of rates & benefits promotions and exposes a curated payload for the storefront. The middleware chain validates inbound requests, calls VTEX's Rates & Benefits API, enriches the response with detailed promotion data, and returns only the fields required by the front end.
+The Promotions Service app, centralizes the retrieval of rates & benefits promotions and exposes a curated route for the storefront. The middleware chain validates inbound requests, calls VTEX's Rates & Benefits API, enriches the response with detailed promotion data, and returns only the fields required by the front end.
 
 ## Features
 
@@ -13,6 +14,24 @@ Custom VTEX IO service that centralizes the retrieval of rates & benefits promot
 - **Data normalization**: Uses `formattedPromotion` to expose a predictable payload (id, name, begin/end dates, conditions, SKUs, collections, categories).
 - **Error sanitation**: `handleVtexError` translates upstream failures into safe HTTP responses without leaking internal details.
 - **Caching ready**: Service leverages VTEX `LRUCache` for the Rates & Benefits client, reducing load on VTEX APIs.
+  
+## Project Structure
+
+```
+frn-promotions-service/
+├── manifest.json               # App metadata, policies, builders
+├── node/
+│   ├── index.ts                # Service entrypoint (clients + routes)
+│   ├── service.json            # Route exposure and scaling hints
+│   ├── clients/                # VTEX IO clients bag (RatesAndBenefits)
+│   ├── middlewares/
+│   │   └── promotions/         # Validation + fetching logic
+|   |── services/               # Contains the business logic layer
+│   ├── utils/                  # Formatting, filtering, error handling
+│   └── typings/                # Shared TypeScript definitions
+├── docs/                       # Documentation
+└── README.md                   
+```
 
 ## Overview
 
@@ -42,6 +61,35 @@ Supporting utilities live in `node/utils/`:
 
 #### Responses
 
+- **200 OK (Promotions list)**
+
+✔️ endpoint promotions
+```/_v/custom-promotions```
+```json
+[
+  {
+  "id": "d38eac5a-f2b3-410f-bc0b-f2211ede433b",
+  "name": "Summer",
+  "beginDate": "2024-01-01T00:00:00Z",
+  "endDate": "2024-01-31T23:59:59Z",
+  "conditions": ["cluster-123"],
+  "skus": ["12"],
+  "collections": ["summer"],
+  "categories": ["fashion"]
+  },
+  {
+  "id": "d68eac5a-f2b3-410f-bc0b-f2211ede433b",
+  "name": "Summer2",
+  "beginDate": "2024-01-01T00:00:00Z",
+  "endDate": "2025-01-31T23:59:59Z",
+  "conditions": ["cluster-124"],
+  "skus": ["13"],
+  "collections": ["summer"],
+  "categories": ["fashion"]
+  }
+]
+```
+
 - **200 OK (single promotion)**
 
 ✔️ endpoint promotion
@@ -58,26 +106,6 @@ Supporting utilities live in `node/utils/`:
   "categories": ["fashion"]
 }
 ```
-
-- **200 OK (list)**
-
-✔️ endpoint promotions
-```/_v/custom-promotions```
-```json
-[
-  {
-  "id": "d38eac5a-f2b3-410f-bc0b-f2211ede433b",
-  "name": "Summer",
-  "beginDate": "2024-01-01T00:00:00Z",
-  "endDate": "2024-01-31T23:59:59Z",
-  "conditions": ["cluster-123"],
-  "skus": ["12"],
-  "collections": ["summer"],
-  "categories": ["fashion"]
-}
-]
-```
-
 - **4xx / 5xx**
 
 ```json
@@ -87,7 +115,12 @@ Supporting utilities live in `node/utils/`:
 }
 ```
 
-## Local Development
+## References
+
+- [Promotions & Taxes API – Calculator Configuration](https://developers.vtex.com/docs/api-reference/promotions-and-taxes-api#get-/api/rnb/pvt/benefits/calculatorconfiguration)  
+  Endpoint used to fetch and manage `idCalculatorConfiguration` data related to Rates & Benefits.
+
+## 🛠 Local Development
 
 ### Prerequisites
 
@@ -111,35 +144,22 @@ The default route is exposed at `https://{workspace}--{account}.myvtex.com/_v/cu
 ### Quality Tooling
 
 ```bash
-yarn lint        # eslint (TypeScript aware)
+yarn run lint        # eslint (TypeScript aware)
+yarn run test        # tests with Jest
+
 ```
 
 Use `lint.sh` (wired to `prereleasy`) before releasing to ensure CI parity.
 
-## 📂 Project Structure
 
-```
-frn-promotions-service/
-├── manifest.json               # App metadata, policies, builders
-├── node/
-│   ├── index.ts                # Service entrypoint (clients + routes)
-│   ├── service.json            # Route exposure and scaling hints
-│   ├── clients/                # VTEX IO clients bag (RatesAndBenefits)
-│   ├── middlewares/
-│   │   └── promotions/         # Validation + fetching logic
-│   ├── utils/                  # Formatting, filtering, error handling
-│   └── typings/                # Shared TypeScript definitions
-├── docs/                       # Optional project documentation
-└── README.md                   # You're here
-```
 
-## Error Handling & Observability
+## ⚙️ Error Handling & Observability
 
 - Errors hit during client calls bubble to `handleVtexError`, which sets `ctx.status` and a minimal `{ message, status }` payload.
 - VTEX Colossus logging is available by injecting `ctx.vtex.logger` (kept commented in middleware for quick enablement).
 - HTTP caching is handled via VTEX's `LRUCache`; tweak `TIMEOUT_MS`, retry count, and `memoryCache` in `node/index.ts` as needed.
 
-## Deployment Notes
+## 🚢 Deployment Notes
 
 - The app inherits policies defined in `manifest.json` (outbound access to `{{account}}.vtexcommercestable.com.br` and logging). Update them if you call additional hosts.
 - `prereleasy` runs `bash lint.sh`. Keep the script aligned with the checks you expect in CI.
